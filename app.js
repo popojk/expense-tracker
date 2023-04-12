@@ -18,7 +18,7 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
 //只要連線有被執行就好不需要回傳值，所以不用設定變數
-//require('./config/mongoose')
+require('./config/mongoose')
 
 //告訴express要使用的view engine 是 handlebar
 app.set('view engine', 'hbs')

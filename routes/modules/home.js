@@ -24,6 +24,7 @@ router.get('/', async (req, res) => {
     res.render('index', { mappedExpenses, totalAmount })
   } catch (err) {
     console.log(err)
+    res.status(500).send('Internal Server Error')
   }
 })
 

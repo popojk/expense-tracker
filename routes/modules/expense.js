@@ -13,7 +13,6 @@ router.get('/new', async (req, res) => {
 //post request to create new expense
 router.post('/new', (req,res) => {
   const {name, date, categoryId, amount} = req.body
-  console.log(date)
   return Expense.create({
     name: name,
     date: date,

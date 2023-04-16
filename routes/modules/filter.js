@@ -7,13 +7,14 @@ const Category = require('../../models/category')
 //get expenses by category
 router.post('/', async (req, res) => {
   try {
+    const userId = req.user._id
     const categoryId = req.body.filter
     //if filter all expenses, query all results by user
     if(categoryId === 'all') {
       res.redirect('/')
     } else {
       //if filter one category expense, query by category
-      const expenses = await Expense.find({ categoryId: categoryId }).lean()
+      const expenses = await Expense.find({ categoryId: categoryId, userId }).lean()
       const categories = await Category.find().lean()
       const category = await Category.findOne({ _id: categoryId }).lean()
       const mappedExpenses = await Promise.all(expenses.map(async (expense) => {        

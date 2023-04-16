@@ -6,7 +6,8 @@ const Category = require('../../models/category')
 //get all expenses and show in home page
 router.get('/', async (req, res) => {
   try {
-    const expenses = await Expense.find().lean()
+    const userId = req.user._id
+    const expenses = await Expense.find({ userId }).lean()
     const categories = await Category.find().lean()
     //to map categoryUrl into expense records
     const mappedExpenses = await Promise.all(expenses.map(async(expense) => {

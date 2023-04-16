@@ -13,11 +13,13 @@ router.get('/new', async (req, res) => {
 //post request to create new expense
 router.post('/new', (req, res) => {
   try {
+    const userId = req.user._id
     const { name, date, categoryId, amount } = req.body
     return Expense.create({
       name: name,
       date: date,
       amount: amount,
+      userId,
       categoryId
     })
       .then(() => res.redirect('/'))
@@ -31,9 +33,10 @@ router.post('/new', (req, res) => {
 //get edit page
 router.get('/:id/edit', async (req, res) => {
   try {
+    const userId = req.user._id
     const categories = await Category.find().lean()
     const _id = req.params.id
-    const expense = await Expense.findOne({ _id }).lean()
+    const expense = await Expense.findOne({ _id, userId }).lean()
     const category = await Category.findOne({ _id: expense.categoryId }).lean()
     expense.categoryName = category.name
     expense.date = expense.date.toISOString().slice(0, 10)
@@ -47,6 +50,7 @@ router.get('/:id/edit', async (req, res) => {
 //sent put request to update expense
 router.put('/:id', (req, res) => {
   try {
+    const userId = req.user._id
     const { name, date, categoryId, amount } = req.body
     const _id = req.params.id
     return Expense.findOneAndUpdate(
@@ -55,6 +59,7 @@ router.put('/:id', (req, res) => {
         name: name,
         date: date,
         amount: amount,
+        userId,
         categoryId
       })
       .then(() => res.redirect('/'))
@@ -68,8 +73,9 @@ router.put('/:id', (req, res) => {
 //set delete request to delete expense
 router.delete('/:id', (req, res) => {
   try {
+    const userId = req.user._id
     const _id = req.params.id
-    return Expense.findOneAndDelete({ _id })
+    return Expense.findOneAndDelete({ _id, userId })
       .then(() => res.redirect('/'))
   } catch (err) {
     console.log(err)

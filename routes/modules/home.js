@@ -7,6 +7,7 @@ const Category = require('../../models/category')
 router.get('/', async (req, res) => {
   try {
     const expenses = await Expense.find().lean()
+    const categories = await Category.find().lean()
     //to map categoryUrl into expense records
     const mappedExpenses = await Promise.all(expenses.map(async(expense) => {
       const categoryId = expense.categoryId
@@ -21,7 +22,7 @@ router.get('/', async (req, res) => {
     const totalAmount = mappedExpenses.reduce(
       (acc, cur) => acc + cur.amount, 0
     )
-    res.render('index', { mappedExpenses, totalAmount })
+    res.render('index', { mappedExpenses, totalAmount, categories })
   } catch (err) {
     console.log(err)
     res.status(500).send('Internal Server Error')

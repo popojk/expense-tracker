@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const Expense = require('../../models/expense')
 const Category = require('../../models/category')
+const totalCalculatorUtil = require('../../utils/totalCalculatorUtil')
 
 //get all expenses and show in home page
 router.get('/', async (req, res) => {
@@ -20,9 +21,8 @@ router.get('/', async (req, res) => {
       }
     }))
     //calculate total amount
-    const totalAmount = mappedExpenses.reduce(
-      (acc, cur) => acc + cur.amount, 0
-    )
+    const totalAmount = totalCalculatorUtil(mappedExpenses)
+    
     res.render('index', { mappedExpenses, totalAmount, categories })
   } catch (err) {
     console.log(err)

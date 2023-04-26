@@ -1,0 +1,9 @@
+//
+.vscode
+# npm
+node_modules
+*.log
+*.gz
+
+# dotenv
+.env

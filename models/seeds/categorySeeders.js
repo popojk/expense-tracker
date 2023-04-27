@@ -4,7 +4,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 const Category = require('../category')
 const db = require('../../config/mongoose')
-const CATEGORY_USER = [
+const CATEGORY_SEED = [
   { name: '家居物業', imageUrl: 'fa-solid fa-house'},
   { name: '交通出行', imageUrl: 'fa-solid fa-van-shuttle' },
   { name: '休閒娛樂', imageUrl: 'fa-solid fa-face-grin-beam' },
@@ -13,8 +13,7 @@ const CATEGORY_USER = [
 ]
 
 db.once('open', async () => {
-  await CATEGORY_USER.forEach((category) => {
-    Category.create({name: category.name, imageUrl: category.imageUrl})
-  })
+  await Category.create(CATEGORY_SEED)
   console.log('category seeder set done')
+  process.exit()
 })

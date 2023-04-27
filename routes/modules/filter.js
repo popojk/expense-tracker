@@ -18,13 +18,13 @@ router.post('/', async (req, res) => {
       const expenses = await Expense.find({ categoryId: categoryId, userId }).lean()
       const categories = await Category.find().lean()
       const category = await Category.findOne({ _id: categoryId }).lean()
-      const mappedExpenses = await Promise.all(expenses.map(async (expense) => {        
+      const mappedExpenses = expenses.map((expense) => {        
         return {
           ...expense,
           date: expense.date.toLocaleDateString(),
           imageUrl: category.imageUrl,
         }
-      }))
+      })
       //calculate total amount
       const totalAmount = totalCalculatorUtil(mappedExpenses)
       

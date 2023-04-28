@@ -19,7 +19,7 @@ router.post('/new', async (req, res) => {
     // form validation check
     const errors = []
     //to prevent exception if the user entered a very long string
-    if (name.length > 2) {
+    if (name.length > 200) {
       errors.push({ message: '名稱不可輸入超過200字' })
     }
     if (errors.length) {
@@ -34,7 +34,7 @@ router.post('/new', async (req, res) => {
         categories
       })
     }
-
+    //load data to db if validation passed
     return Expense.create({
       name: name,
       date: date,
@@ -60,7 +60,8 @@ router.get('/:id/edit', async (req, res) => {
     const category = await Category.findOne({ _id: expense.categoryId }).lean()
     expense.categoryName = category.name
     expense.date = expense.date.toISOString().slice(0, 10)
-    res.render('edit', { expense, categories })
+    res.render('edit', { 
+      expense, categories })
   } catch (err) {
     console.log(err)
     res.status(500).send('Internal Server Error')
@@ -68,11 +69,30 @@ router.get('/:id/edit', async (req, res) => {
 })
 
 //sent put request to update expense
-router.put('/:id', (req, res) => {
+router.put('/:id', async (req, res) => {
   try {
     const userId = req.user._id
     const { name, date, categoryId, amount } = req.body
     const _id = req.params.id
+
+    // form validation check
+    const errors = []
+    //to prevent exception if the user entered a very long string
+    if (name.length > 2) {
+      errors.push({ message: '名稱不可輸入超過200字' })
+    }
+    if (errors.length) {
+      const categories = await Category.find().lean()
+      const category = await Category.findOne({ _id: categoryId }).lean()
+      const expense = { _id, name, date, categoryId, amount }
+      expense.categoryName = category.name
+      return res.render('edit', {
+        errors,
+        expense,
+        categories
+      })
+    }
+
     return Expense.findOneAndUpdate(
       { _id }
       , {

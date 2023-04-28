@@ -8,6 +8,8 @@ const session = require('express-session')
 const usePassport = require('./config/passport')
 const flash = require('connect-flash')
 
+const PORT = process.env.PORT || 3000
+
 // request body parser
 app.use(express.urlencoded({ extended: true }))
 // 定義要使用的樣版引擎
@@ -41,6 +43,6 @@ app.use((req, res, next) => {
 app.use(methodOverride('_method'))
 app.use(routes)
 
-app.listen(process.env.PORT, () => {
-  console.log(`Server is listening on http://locallhost:${process.env.PORT}`)
+app.listen(PORT, () => {
+  console.log(`Server is listening on http://locallhost:${PORT}`)
 })

@@ -8,14 +8,14 @@ const Expense = require('../expense')
 const db = require('../../config/mongoose')
 
 db.once('open', async () => {
-  //get categories from db
+  // get categories from db
   const categories = await Category.find().lean()
-  //map categories data in to name: id data pair
+  // map categories data in to name: id data pair
   const categoryIds = {}
   categories.map(category => {
     categoryIds[category.name] = category._id
   })
-  //create seed data
+  // create seed data
   const SEED_USER = {
     name: 'dad',
     email: 'dad@example.com',
@@ -54,9 +54,9 @@ db.once('open', async () => {
   const userId = user._id
   // create promises to load expenses seed into db
   const expensePromises = SEED_EXPENSES.map(async (expense) => {
-        await Expense.create({ ...expense, userId })
+    await Expense.create({ ...expense, userId })
   })
-  const expenses = await Promise.all(expensePromises);
+  await Promise.all(expensePromises)
   console.log('user and expenses seeder set done')
   process.exit()
 })

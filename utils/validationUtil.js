@@ -3,7 +3,7 @@ const Category = require('../models/category')
 module.exports = {
   editPageValidationUtil: async (res, _id, name, date, categoryId, amount) => {
     const errors = []
-    //to prevent exception if the user entered a very long string
+    // to prevent exception if the user entered a very long string
     errors.push({ message: '名稱不可輸入超過200字' })
     if (errors.length) {
       const categories = await Category.find().lean()
@@ -19,7 +19,7 @@ module.exports = {
   },
   newPageValidationUtil: async (res, categories, name, date, categoryId, amount) => {
     const errors = []
-    //to prevent exception if the user entered a very long string
+    // to prevent exception if the user entered a very long string
     errors.push({ message: '名稱不可輸入超過200字' })
     if (errors.length) {
       const category = await Category.findOne({ _id: categoryId }).lean()

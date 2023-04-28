@@ -11,10 +11,30 @@ router.get('/new', async (req, res) => {
 })
 
 //post request to create new expense
-router.post('/new', (req, res) => {
+router.post('/new', async (req, res) => {
   try {
     const userId = req.user._id
     const { name, date, categoryId, amount } = req.body
+    const categories = await Category.find().lean()
+    // form validation check
+    const errors = []
+    //to prevent exception if the user entered a very long string
+    if (name.length > 2) {
+      errors.push({ message: '名稱不可輸入超過200字' })
+    }
+    if (errors.length) {
+      const category = await Category.findOne({ _id: categoryId }).lean()
+      return res.render('new', {
+        errors,
+        name,
+        date,
+        categoryId: category._id,
+        categoryName: category.name,
+        amount,
+        categories
+      })
+    }
+
     return Expense.create({
       name: name,
       date: date,

@@ -6,16 +6,19 @@
         <form action="/expense/new" method="POST">
           <div class="mb-3">
             <p class="mb-3"><span class="text-danger">*</span>必填欄位</p>
+            {{> message }}
             <label for="name">名稱<span class="text-danger">*</span></label>
-            <input type="text" class="form-control" id="name" name="name" placeholder="交通費" required>
+            <input type="text" class="form-control" id="name" name="name" placeholder="交通費" value="{{name}}" required>
           </div>
           <div class="mb-3">
             <label for="date">日期<span class="text-danger">*</span></label>
-            <input type="date" class="form-control" id="date" name="date" required>
+            <input type="date" class="form-control" id="date" name="date" 
+            value="{{date}}" required>
           </div>
           <div class="mb-3">
             <label for="categoryId">類別<span class="text-danger">*</span></label>
-            <select class="form-control" id="categoryId" name="categoryId" required>
+            <select class="form-control" id="categoryId" name="categoryId" value=""required>
+              <option value="{{categoryId}}" hidden="hidden">{{ categoryName}}</option>
               <option value="">請選擇類別</option>
               {{#each categories}}
               <option value="{{ this._id }}">{{ this.name }}</option>
@@ -24,7 +27,7 @@
           </div>
           <div class="mb-3">
             <label for="amount">金額<span class="text-danger">*</span></label>
-            <input type="number" class="form-control" id="amount" name="amount" placeholder="輸入金額" step="0.01" required>
+            <input type="number" class="form-control" id="amount" name="amount" placeholder="輸入金額" step="0.01" value="{{amount}}" required>
           </div>
           <div class="text-center my-3">
             <button type="submit" class="btn btn-primary">新增支出</button>
